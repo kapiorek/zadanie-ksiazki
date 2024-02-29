@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Strona www xD</title>
+</head>
+<body>
+  <button onclick="pokazZakladke('formularzUczniowie')">Uczniowie</button>
+  <button onclick="pokazZakladke('formularzKsiazki')">Książki</button>
+  <button onclick="pokazZakladke('daneZSerwera')">Dane z serwera</button>
+  
+  <div id="formularzUczniowie" style="display: none;">
+    <h2>Dodaj ucznia:</h2>
+    <form id="formUczniowie" action="https://imiki.pl/projekt" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)">
+      <label for="imieUcznia">Imię:</label>
+      <input type="text" id="imieUcznia" name="imie" required>
+      <label for="nazwiskoUcznia">Nazwisko:</label>
+      <input type="text" id="nazwiskoUcznia" name="nazwisko" required>
+      <button type="submit">Dodaj Ucznia</button>
+    </form>
+  </div>
+
+  <div id="formularzKsiazki" style="display: none;">
+    <h2>Dodaj książkę:</h2>
+    <form id="formKsiazki" action="https://imiki.pl/projekt" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)">
+      <label for="tytulKsiazki">Tytuł:</label>
+      <input type="text" id="tytulKsiazki" name="tytul" required>
+      <label for="autorKsiazki">Autor:</label>
+      <input type="text" id="autorKsiazki" name="autor" required>
+      <button type="submit">Dodaj Książkę</button>
+    </form>
+  </div>
+
+  <div id="daneZSerwera" style="display: none;">
+    <h2>Dane pobrane z serwera:</h2>
+    <div id="wyp"></div>
+  </div>
+
+<script>
+function pokazZakladke(zakladka) {
+  const formularzUczniowie = document.getElementById('formularzUczniowie');
+  const formularzKsiazki = document.getElementById('formularzKsiazki');
+  const daneZSerwera = document.getElementById('daneZSerwera');
+
+  if (zakladka === 'formularzUczniowie') {
+    formularzUczniowie.style.display = 'block';
+    formularzKsiazki.style.display = 'none';
+    daneZSerwera.style.display = 'none';
+  } else if (zakladka === 'formularzKsiazki') {
+    formularzUczniowie.style.display = 'none';
+    formularzKsiazki.style.display = 'block';
+    daneZSerwera.style.display = 'none';
+  } else if (zakladka === 'daneZSerwera') {
+    formularzUczniowie.style.display = 'none';
+    formularzKsiazki.style.display = 'none';
+    daneZSerwera.style.display = 'block';
+    pobierzDaneZSerwera();
+  }
+}
+
+function wyslijFormularz(form) {
+  const formData = new FormData(form);
+  fetch(form.action, {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Dane zostały wysłane pomyślnie!');
+      alert('Dane zostały wysłane pomyślnie!');
+    } else {
+      console.error('Wystąpił błąd podczas wysyłania danych.');
+      alert('Wystąpił błąd podczas wysyłania danych.');
+    }
+  })
+  .catch(error => {
+    console.error('Błąd:', error);
+    alert('Wystąpił błąd podczas wysyłania danych.');
+  });
+}
+
+function pobierzDaneZSerwera() {
+  const url = "https://imiki.pl/projekt/mm1/users";
+  const w = document.getElementById("wyp");
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      let str = "";
+      data.forEach((item, index) => {
+        const user = JSON.parse(item.data);
+        str += `${index + 1}. ${item.id} ${item.user} ${item.data} ${user.nazwisko}<br>`;
+      });
+      w.innerHTML = str;
+    })
+    .catch(error => {
+      console.error('Błąd:', error);
+      w.innerHTML = "Wystąpił błąd podczas pobierania danych z serwera.";
+    });
+}
+</script>
+
+</body>
+</html>

@@ -11,7 +11,7 @@
   
   <div id="formularzUczniowie" style="display: none;">
     <h2>Dodaj ucznia:</h2>
-    <form id="formUczniowie" action="https://imiki.pl/projekt/ks18/users" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)">
+    <form id="formUczniowie" action="https://imiki.pl/projekt/sk18/users" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)">
       <label for="imieUcznia">Imię:</label>
       <input type="text" id="imieUcznia" name="imie" required>
       <label for="nazwiskoUcznia">Nazwisko:</label>
@@ -22,7 +22,7 @@
 
   <div id="formularzKsiazki" style="display: none;">
     <h2>Dodaj książkę:</h2>
-    <form id="formKsiazki" action="https://imiki.pl/projekt/ks18/users" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)">
+    <form id="formKsiazki" action="https://imiki.pl/projekt/sk18/users" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)">
       <label for="tytulKsiazki">Tytuł:</label>
       <input type="text" id="tytulKsiazki" name="tytul" required>
       <label for="autorKsiazki">Autor:</label>
@@ -80,7 +80,7 @@ function wyslijFormularz(form) {
 }
 
 function pobierzDaneZSerwera() {
-  const url = "https://imiki.pl/projekt/ks18/users";
+  const url = "https://imiki.pl/projekt/sk18/users";
   const w = document.getElementById("wyp");
 
   fetch(url)

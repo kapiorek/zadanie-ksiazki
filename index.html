@@ -1,81 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <
   <meta charset="utf-8" />
   <title>Strona www xD</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="container mt-5">
-    <button class="btn btn-primary mr-2" onclick="pokazZakladke('formularzUczniowie')">Uczniowie</button>
-    <button class="btn btn-primary mr-2" onclick="pokazZakladke('formularzKsiazki')">Książki</button>
-    <button class="btn btn-primary mr-2" onclick="pokazZakladke('daneZSerwera')">Dane z serwera</button>
-    <button class="btn btn-primary" onclick="pokazZakladke('wypozyczenie')">Wypożyczenie</button>
+  <button onclick="pokazZakladke('formularzUczniowie')">Uczniowie</button>
+  <button onclick="pokazZakladke('formularzKsiazki')">Książki</button>
+  <button onclick="pokazZakladke('daneZSerwera')">Dane z serwera</button>
+  <button onclick="pokazZakladke('formularzWypozyczenie')">Wypożyczenie</button>
+  
+  <div id="formularzUczniowie" style="display: none;">
+    <h2>Dodaj ucznia:</h2>
+    <!-- Formularz dodawania ucznia -->
   </div>
 
-  <div class="container mt-3">
-    <div id="formularzUczniowie" style="display: none;">
-      <h2>Dodaj ucznia:</h2>
-      <form id="formUczniowie" action="https://imiki.pl/projekt/sk18/users" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)" class="needs-validation" novalidate>
-        <div class="form-group">
-          <label for="imieUcznia">Imię:</label>
-          <input type="text" id="imieUcznia" name="imie" class="form-control" required>
-          <div class="invalid-feedback">Pole wymagane</div>
-        </div>
-        <div class="form-group">
-          <label for="nazwiskoUcznia">Nazwisko:</label>
-          <input type="text" id="nazwiskoUcznia" name="nazwisko" class="form-control" required>
-          <div class="invalid-feedback">Pole wymagane</div>
-        </div>
-        <button type="submit" class="btn btn-primary">Dodaj Ucznia</button>
-      </form>
-    </div>
+  <div id="formularzKsiazki" style="display: none;">
+    <h2>Dodaj książkę:</h2>
+    <!-- Formularz dodawania książki -->
+  </div>
 
-    <div id="formularzKsiazki" style="display: none;">
-      <h2>Dodaj książkę:</h2>
-      <form id="formKsiazki" action="https://imiki.pl/projekt/sk18/books" method="post" onsubmit="event.preventDefault(); wyslijFormularz(this)" class="needs-validation" novalidate>
-        <div class="form-group">
-          <label for="tytulKsiazki">Tytuł:</label>
-          <input type="text" id="tytulKsiazki" name="tytul" class="form-control" required>
-          <div class="invalid-feedback">Pole wymagane</div>
-        </div>
-        <div class="form-group">
-          <label for="autorKsiazki">Autor:</label>
-          <input type="text" id="autorKsiazki" name="autor" class="form-control" required>
-          <div class="invalid-feedback">Pole wymagane</div>
-        </div>
-        <button type="submit" class="btn btn-primary">Dodaj Książkę</button>
-      </form>
-    </div>
+  <div id="daneZSerwera" style="display: none;">
+    <h2>Dane pobrane z serwera:</h2>
+    <div id="wyp"></div>
+  </div>
 
-    <div id="daneZSerwera" style="display: none;">
-      <h2>Dane pobrane z serwera:</h2>
-      <div id="wyp"></div>
-    </div>
-
-    <div id="wypozyczenie" style="display: none;">
-      <h2>Wypożyczenie książki:</h2>
-      <form id="formWypozyczenie" action="https://imiki.pl/projekt/sk18/users" method="post" onsubmit="event.preventDefault(); wyslijWypozyczenie(this)" class="needs-validation" novalidate>
-        <div class="form-group">
-          <label for="imieUczniaWyp">Imię ucznia:</label>
-          <input type="text" id="imieUczniaWyp" name="imie" class="form-control" required>
-          <div class="invalid-feedback">Pole wymagane</div>
-        </div>
-        <div class="form-group">
-          <label for="nazwiskoUczniaWyp">Nazwisko ucznia:</label>
-          <input type="text" id="nazwiskoUczniaWyp" name="nazwisko" class="form-control" required>
-          <div class="invalid-feedback">Pole wymagane</div>
-        </div>
-        <div class="form-group">
-          <label for="ksiazkaWyp">Książka:</label>
-          <select id="ksiazkaWyp" name="ksiazka" class="form-control" required>
-            <!-- Książki będą dynamicznie dodawane z API -->
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Wypożycz</button>
-      </form>
-    </div>
+  <div id="formularzWypozyczenie" style="display: none;">
+    <h2>Wypożycz książkę:</h2>
+    <form id="formWypozyczenie" action="https://imiki.pl/projekt/sk18/rent-book" method="post" onsubmit="event.preventDefault(); wyslijWypozyczenie(this)">
+      <label for="ksiazkaWyp">Wybierz książkę:</label>
+      <select id="ksiazkaWyp" name="isbn" required>
+        <!-- Opcje będą dodawane dynamicznie za pomocą JavaScript -->
+      </select>
+      <label for="imieUcznia">Imię ucznia:</label>
+      <input type="text" id="imieUcznia" name="imie" required>
+      <label for="nazwiskoUcznia">Nazwisko ucznia:</label>
+      <input type="text" id="nazwiskoUcznia" name="nazwisko" required>
+      <button type="submit">Wypożycz książkę</button>
+    </form>
   </div>
 
 <script>
@@ -83,56 +46,64 @@ function pokazZakladke(zakladka) {
   const formularzUczniowie = document.getElementById('formularzUczniowie');
   const formularzKsiazki = document.getElementById('formularzKsiazki');
   const daneZSerwera = document.getElementById('daneZSerwera');
-  const wypozyczenie = document.getElementById('wypozyczenie');
+  const formularzWypozyczenie = document.getElementById('formularzWypozyczenie');
 
   if (zakladka === 'formularzUczniowie') {
     formularzUczniowie.style.display = 'block';
     formularzKsiazki.style.display = 'none';
     daneZSerwera.style.display = 'none';
-    wypozyczenie.style.display = 'none';
+    formularzWypozyczenie.style.display = 'none';
   } else if (zakladka === 'formularzKsiazki') {
     formularzUczniowie.style.display = 'none';
     formularzKsiazki.style.display = 'block';
     daneZSerwera.style.display = 'none';
-    wypozyczenie.style.display = 'none';
+    formularzWypozyczenie.style.display = 'none';
   } else if (zakladka === 'daneZSerwera') {
     formularzUczniowie.style.display = 'none';
     formularzKsiazki.style.display = 'none';
     daneZSerwera.style.display = 'block';
-    wypozyczenie.style.display = 'none';
+    formularzWypozyczenie.style.display = 'none';
     pobierzDaneZSerwera();
-  } else if (zakladka === 'wypozyczenie') {
+  } else if (zakladka === 'formularzWypozyczenie') {
     formularzUczniowie.style.display = 'none';
     formularzKsiazki.style.display = 'none';
     daneZSerwera.style.display = 'none';
-    wypozyczenie.style.display = 'block';
+    formularzWypozyczenie.style.display = 'block';
     pobierzKsiazkiDoWypozyczenia();
   }
 }
 
-function wyslijFormularz(form) {
-  const formData = new FormData(form);
-  fetch(form.action, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (response.ok) {
-      console.log('Dane zostały wysłane pomyślnie!');
-      alert('Dane zostały wysłane pomyślnie!');
-    } else {
-      console.error('Wystąpił błąd podczas wysyłania danych.');
-      alert('Wystąpił błąd podczas wysyłania danych.');
-    }
-  })
-  .catch(error => {
-    console.error('Błąd:', error);
-    alert('Wystąpił błąd podczas wysyłania danych.');
-  });
+function pobierzKsiazkiDoWypozyczenia() {
+  const url = "https://imiki.pl/projekt/API/books";
+  const selectKsiazka = document.getElementById("ksiazkaWyp");
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (data && data.ksiazki && Array.isArray(data.ksiazki)) {
+        data.ksiazki.forEach(item => {
+          const option = document.createElement("option");
+          option.text = item.tytul;
+          option.value = item.ISBN;
+          selectKsiazka.add(option);
+        });
+      } else {
+        throw new Error('Invalid data format');
+      }
+    })
+    .catch(error => {
+      console.error('Błąd:', error);
+      alert("Wystąpił błąd podczas pobierania listy książek do wypożyczenia.");
+    });
 }
 
 function wyslijWypozyczenie(form) {
-  const formData = new FormData(form);
+  const formData = new FormData();
+  const selectedISBN = document.getElementById("ksiazkaWyp").value;
+  formData.append("isbn", selectedISBN);
+  formData.append("imie", form.imie.value);
+  formData.append("nazwisko", form.nazwisko.value);
+
   fetch(form.action, {
     method: 'POST',
     body: formData
@@ -141,7 +112,7 @@ function wyslijWypozyczenie(form) {
     if (response.ok) {
       console.log('Wypożyczono książkę pomyślnie!');
       alert('Wypożyczono książkę pomyślnie!');
-      pokazZakladke('daneZSerwera'); 
+      pokazZakladke('daneZSerwera'); // Odśwież dane z serwera po udanym wypożyczeniu
     } else {
       console.error('Wystąpił błąd podczas wypożyczania książki.');
       alert('Wystąpił błąd podczas wypożyczania książki.');
@@ -152,7 +123,6 @@ function wyslijWypozyczenie(form) {
     alert('Wystąpił błąd podczas wypożyczania książki.');
   });
 }
-
 
 function pobierzDaneZSerwera() {
   const url = "https://imiki.pl/projekt/sk18/users";
@@ -174,36 +144,6 @@ function pobierzDaneZSerwera() {
     });
 }
 
-function pobierzKsiazkiDoWypozyczenia() {
-  const url = "https://imiki.pl/projekt/API/books";
-  const selectKsiazka = document.getElementById("ksiazkaWyp");
-
-  fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data && data.ksiazki && Array.isArray(data.ksiazki)) {
-        data.ksiazki.forEach(item => {
-          const option = document.createElement("option");
-          option.text = item.tytul;
-          option.value = item.ISBN;
-          selectKsiazka.add(option);
-        });
-      } else {
-        throw new Error('Invalid data format');
-      }
-    })
-    .catch(error => {
-      console.error('Błąd:', error);
-      alert("Wystąpił błąd podczas pobierania listy książek do wypożyczenia.");
-    });
-}
-
 </script>
-
 </body>
 </html>
